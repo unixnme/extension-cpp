@@ -42,3 +42,14 @@ class LLTM(nn.Module):
 
     def forward(self, input, state):
         return LLTMFunction.apply(input, self.weights, self.bias, *state)
+
+
+if __name__ == '__main__':
+    batch_size = 3
+    input_size = 5
+    state_size = 7
+    lltm = LLTM(input_size, state_size)
+    x = torch.randn(batch_size, input_size)
+    h = torch.randn(batch_size, state_size)
+
+    lltm.forward(x, (h, h))
