@@ -1,10 +1,17 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(lltm_cpp)
+
 set(CMAKE_CXX_FLAGS "-g -O0")
 
-add_subdirectory(pybind11)
-pybind11_add_module(lltm_cpp lltm.cpp)
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+set(TORCH_MODULE_NAME lltm_cpp)
 
-target_include_directories(lltm_cpp PRIVATE
+# this is the critical component!!
+add_compile_definitions(TORCH_EXTENSION_NAME=${TORCH_MODULE_NAME})
+
+add_subdirectory(pybind11)
+pybind11_add_module(${TORCH_MODULE_NAME} lltm.cpp)
+
+target_include_directories(${TORCH_MODULE_NAME} PRIVATE
         libtorch//include
         libtorch/include/torch/csrc/api/include)
